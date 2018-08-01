@@ -26,7 +26,7 @@ public abstract class BaseAdapter<E extends Object, P extends IBaseAdapterPresen
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(getLayoutRes(viewType), parent, false);
-        String str = getClassHolder().getName();
+        String str = getClassHolder(viewType).getName();
         try {
             Class aClass = Class.forName(str);
             BaseHolder baseHolder = (BaseHolder) aClass.getConstructor(View.class).newInstance(inflate);
@@ -77,6 +77,6 @@ public abstract class BaseAdapter<E extends Object, P extends IBaseAdapterPresen
     }
 
     public abstract int getLayoutRes(int viewType);
-    public abstract Class getClassHolder();
+    public abstract Class getClassHolder(int viewType);
     public abstract int getViewType(int position);
 }

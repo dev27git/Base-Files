@@ -45,4 +45,5 @@ public interface IBaseView {
     void hideKeyboard(View view);
 
     Bundle getBundleData();
+    boolean isConnectedToNetwork();
 }

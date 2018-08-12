@@ -6,7 +6,7 @@ import java.util.List;
  * Created by rahul on 14/1/18.
  */
 
-public interface IBaseAdapterPresenter<E extends Object> {
+public interface IBaseAdapterPresenter<E> {
 
     void onAttach(IBaseHolderView baseHolderView);
 
@@ -14,9 +14,10 @@ public interface IBaseAdapterPresenter<E extends Object> {
     void onAttachAdapter(BaseAdapter adapter);
     void onBind(int position);
 
-    void addNewItems(List<E> listNewItems);
+    void addNewList(List<E> listNewItems);
     void addItem(E data);
+    void addItemAt(int position, E data);
     void removeItem(int position);
-    E getElementAtPos(int position);
-    List<E> getAllElements();
+    E getFrom(int position);
+    List<E> getAll();
 }

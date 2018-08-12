@@ -1,5 +1,6 @@
 package com.rp.sampleapp.ui.base;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
  * Created by rahul on 14/1/18.
  */
 
-public abstract class BaseAdapter<E extends Object, P extends IBaseAdapterPresenter<E>>
+public abstract class BaseAdapter<E, P extends IBaseAdapterPresenter<E>>
         extends RecyclerView.Adapter<BaseHolder<P>> {
 
     private final String TAG = BaseAdapter.class.getSimpleName();
@@ -26,9 +27,9 @@ public abstract class BaseAdapter<E extends Object, P extends IBaseAdapterPresen
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(getLayoutRes(viewType), parent, false);
-        String str = getClassHolder(viewType).getName();
+//        String str = getClassHolder(viewType).getName();
         try {
-            Class aClass = Class.forName(str);
+            Class aClass = getClassHolder(viewType);
             BaseHolder baseHolder = (BaseHolder) aClass.getConstructor(View.class).newInstance(inflate);
             baseHolder.setPresenter(presenter);
             return baseHolder;
@@ -39,8 +40,6 @@ public abstract class BaseAdapter<E extends Object, P extends IBaseAdapterPresen
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
@@ -53,7 +52,7 @@ public abstract class BaseAdapter<E extends Object, P extends IBaseAdapterPresen
     }
 
     @Override
-    public void onViewRecycled(BaseHolder holder) {
+    public void onViewRecycled(@NonNull BaseHolder holder) {
         super.onViewRecycled(holder);
     }
 

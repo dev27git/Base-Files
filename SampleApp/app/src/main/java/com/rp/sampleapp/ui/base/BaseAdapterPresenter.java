@@ -7,7 +7,7 @@ import java.util.List;
  * Created by rahul on 20/1/18.
  */
 
-public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E extends Object>
+public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
         implements IBaseAdapterPresenter<E> {
 
     private List<E> list;
@@ -48,12 +48,7 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E extends 
     }
 
     @Override
-    public E getElementAtPos(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public void addNewItems(List<E> listNewItems) {
+    public void addNewList(List<E> listNewItems) {
         int currentSize = getCount();
         list.addAll(listNewItems);
         adapter.notifyItemRangeInserted(currentSize, getCount());
@@ -66,13 +61,24 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E extends 
     }
 
     @Override
+    public void addItemAt(int position, E data) {
+        list.add(data);
+        adapter.notifyItemInserted(position);
+    }
+
+    @Override
     public void removeItem(int position) {
         list.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
     @Override
-    public List<E> getAllElements() {
+    public E getFrom(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public List<E> getAll() {
         return list;
     }
 }

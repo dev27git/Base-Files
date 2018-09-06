@@ -1,4 +1,4 @@
-package com.rp.sampleapp.ui.base;
+package com.rp.basefiles;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,28 +32,18 @@ public abstract class BaseActivity extends AppCompatActivity
     private Context context = this;
 
     private Snackbar snackbar;
-    private ProgressDialog progressDialog;
     private ActionBar actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
     }
 
     @Override
     public void onAttachSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
-        setSwipeListener(this);
-    }
-
-    @Override
-    public void setSwipeListener(SwipeRefreshLayout.OnRefreshListener listener) {
-        if (swipeRefreshLayout != null)
-            swipeRefreshLayout.setOnRefreshListener(listener);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -111,18 +101,6 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public void showProgressDialog() {
-        if (progressDialog != null)
-            progressDialog.show();
-    }
-
-    @Override
-    public void hideProgressDialog() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
-    }
-
-    @Override
     public void initializeSnackBar(View view) {
         snackbar = Snackbar.make(view, "Please try again", Snackbar.LENGTH_LONG);
     }
@@ -131,11 +109,8 @@ public abstract class BaseActivity extends AppCompatActivity
     public void showSnackBarMessage(String message) {
         try {
             snackbar.setText(message);
-            snackbar.setAction("Dismiss", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            snackbar.setAction("Dismiss", view -> {
 
-                }
             });
             snackbar.show();
         } catch (NullPointerException e) {

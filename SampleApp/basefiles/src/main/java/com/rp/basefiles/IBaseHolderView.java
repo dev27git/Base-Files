@@ -1,4 +1,4 @@
-package com.rp.sampleapp.ui.base;
+package com.rp.basefiles;
 
 public interface IBaseHolderView {
 

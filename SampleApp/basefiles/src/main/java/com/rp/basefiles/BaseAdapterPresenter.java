@@ -1,4 +1,4 @@
-package com.rp.sampleapp.ui.base;
+package com.rp.basefiles;
 
 import java.util.ArrayList;
 import java.util.List;

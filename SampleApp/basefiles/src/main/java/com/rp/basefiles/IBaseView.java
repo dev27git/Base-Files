@@ -1,4 +1,4 @@
-package com.rp.sampleapp.ui.base;
+package com.rp.basefiles;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,13 +22,9 @@ public interface IBaseView {
     void setSubTitle(String subTitle);
 
     void onAttachSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout);
-    void setSwipeListener(SwipeRefreshLayout.OnRefreshListener listener);
 
     void onShowLoading();
     void onHideLoading();
-
-    void showProgressDialog();
-    void hideProgressDialog();
 
     void onFailed(@NonNull String message);
     void onError(@NonNull String error);

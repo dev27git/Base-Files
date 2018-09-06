@@ -1,4 +1,4 @@
-package com.rp.sampleapp.ui.base;
+package com.rp.basefiles;
 
 /**
  * Created by rahul on 4/1/18.

@@ -1,4 +1,4 @@
-package com.rp.sampleapp.ui.base;
+package com.rp.basefiles;
 
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
@@ -43,7 +43,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, SwipeR
     @Override
     public void onAttachSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
-        setSwipeListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -72,11 +72,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView, SwipeR
     }
 
     @Override
-    public void setSwipeListener(SwipeRefreshLayout.OnRefreshListener listener) {
-        swipeRefreshLayout.setOnRefreshListener(listener);
-    }
-
-    @Override
     public void onShowLoading() {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
@@ -101,16 +96,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView, SwipeR
     @Override
     public void onSuccess(@NonNull String message) {
         baseActivity.onSuccess(message);
-    }
-
-    @Override
-    public void showProgressDialog() {
-        baseActivity.showProgressDialog();
-    }
-
-    @Override
-    public void hideProgressDialog() {
-        baseActivity.hideProgressDialog();
     }
 
     @Override

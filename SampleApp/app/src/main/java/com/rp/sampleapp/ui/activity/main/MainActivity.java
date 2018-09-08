@@ -50,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(singleAdapter);*/
 
-        List<MultiData> dataOne = new ArrayList<>();
+        /**
+         * For multi layouts
+         */
+
+        /*List<MultiData> dataOne = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             dataOne.add(new MultiData(i));
         }
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(multiAdapter);
+        recyclerView.setAdapter(multiAdapter);*/
 
     }
 }

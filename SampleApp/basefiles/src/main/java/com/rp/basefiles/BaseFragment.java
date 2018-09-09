@@ -108,29 +108,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView, SwipeR
         baseActivity.showSnackBarMessage(message);
     }
 
+    @NonNull
     @Override
     public Lifecycle getLifecycle() {
         return super.getLifecycle();
-    }
-
-    @Override
-    public void onAttachFragment(@NonNull Fragment fragment, @NonNull String tag) {
-        baseActivity.onAttachFragment(fragment,tag);
-    }
-
-    @Override
-    public void onAttachFragment(@NonNull Fragment fragment, @NonNull String tag, boolean addToBackStack) {
-        baseActivity.onAttachFragment(fragment,tag,addToBackStack);
-    }
-
-    @Override
-    public void onDetachFragment(@NonNull String tag) {
-        baseActivity.onDetachFragment(tag);
-    }
-
-    @Override
-    public void removeAllBackStackFragments() {
-        baseActivity.removeAllBackStackFragments();
     }
 
     @Override

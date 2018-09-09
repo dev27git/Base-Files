@@ -1,10 +1,12 @@
 package com.rp.basefiles;
 
+import android.arch.lifecycle.ViewModel;
+
 /**
  * Created by rahul on 4/1/18.
  */
 
-public abstract class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
+public abstract class BasePresenterVM<V extends IBaseView> extends ViewModel implements IBasePresenter<V> {
 
     private V view;
 
@@ -19,6 +21,12 @@ public abstract class BasePresenter<V extends IBaseView> implements IBasePresent
 
     @Override
     public void onDestroy() {
+        onCleared();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
         view = null;
     }
 }

@@ -1,6 +1,6 @@
 package com.rp.sampleapp.pojo;
 
-import com.rp.basefiles.adapter.IRAdapterViewType;
+import com.rp.util.adapter.IRAdapterViewType;
 
 public class MultiData implements IRAdapterViewType {
 

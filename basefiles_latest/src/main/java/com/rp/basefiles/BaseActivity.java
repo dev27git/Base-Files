@@ -1,7 +1,6 @@
 package com.rp.basefiles;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,9 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +18,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rp.util.fragment.IFragmentBuilder;
+
 /**
  * Created by rahul on 4/1/18.
  */
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
+        implements IBaseView, SwipeRefreshLayout.OnRefreshListener, IFragmentBuilder {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context context = this;
@@ -123,46 +122,6 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public void onAttachFragment(@NonNull Fragment fragment,@NonNull String tag) {
-        if (fragment == null)
-            return;
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(getFragmentContainerId(),fragment,tag);
-        //fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onAttachFragment(@NonNull Fragment fragment, @NonNull String tag, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(getFragmentContainerId(),fragment,tag);
-        //fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-        if (addToBackStack)
-            fragmentTransaction.addToBackStack(null);
-
-        fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onDetachFragment(@NonNull String tag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-
-        if (fragment == null) return;
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(fragment);
-        fragmentTransaction.commit();
-    }
-
-    @Override
-    public void removeAllBackStackFragments() {
-        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    @Override
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -201,16 +160,12 @@ public abstract class BaseActivity extends AppCompatActivity
         swipeRefreshLayout = null;
     }
 
-    public abstract int getLayoutRes();
-    public abstract int getFragmentContainerId();
-
-    public TextView changeToolbarFont(Toolbar toolbar, Context context) {
+    public TextView changeToolbarFont(Toolbar toolbar) {
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View view = toolbar.getChildAt(i);
             if (view instanceof TextView) {
                 TextView tv = (TextView) view;
                 if (tv.getText().equals(toolbar.getTitle())) {
-                    applyFont(tv, context);
                     return tv;
                 }
             }
@@ -218,7 +173,10 @@ public abstract class BaseActivity extends AppCompatActivity
         return null;
     }
 
-    public void applyFont(TextView tv, Context context) {
-        //tv.setTypeface(FontCache.getRobotoLightFont(context));
+    @Override
+    public FragmentManager fragmentManager() {
+        return getSupportFragmentManager();
     }
+
+    public abstract int getLayoutRes();
 }

@@ -11,7 +11,8 @@ public class MultiPresenter<E extends MultiData> extends BaseAdapterPresenter<IB
 
     @Override
     public void onBind(int position) {
-        if (view() instanceof MultiMVP.IViewOne)
+        if (view() instanceof
+                MultiMVP.IViewOne)
             onBind((MultiMVP.IViewOne) view(), position);
         else
             onBind(((MultiMVP.IViewTwo) view()), position);

@@ -3,7 +3,6 @@ package com.rp.basefiles;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
@@ -32,11 +31,6 @@ public interface IBaseView {
 
     void initializeSnackBar(View view);
     void showSnackBarMessage(String message);
-
-    void onAttachFragment(@NonNull Fragment fragment, @NonNull String tag);
-    void onAttachFragment(@NonNull Fragment fragment, @NonNull String tag, boolean addToBackStack);
-    void onDetachFragment(@NonNull String tag);
-    void removeAllBackStackFragments();
 
     void hideKeyboard(View view);
 

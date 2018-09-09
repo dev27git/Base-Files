@@ -6,19 +6,19 @@ package com.rp.basefiles;
 
 public abstract class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
-    private V baseView;
+    private V view;
 
     @Override
     public void onAttach(V baseView) {
-        this.baseView = baseView;
+        this.view = baseView;
+    }
+
+    public V view() {
+        return view;
     }
 
     @Override
-    public void onDetach() {
-        baseView = null;
-    }
-
-    public V getBaseView() {
-        return baseView;
+    public void onDestroy() {
+        view = null;
     }
 }

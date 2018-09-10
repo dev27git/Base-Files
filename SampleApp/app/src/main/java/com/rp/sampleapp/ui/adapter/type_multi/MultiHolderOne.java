@@ -6,7 +6,7 @@ import com.rp.basefiles.BaseHolder;
 import com.rp.sampleapp.pojo.MultiData;
 import com.rp.sampleapp.pojo.SingleData;
 
-public class MultiHolderOne extends BaseHolder<MultiPresenter<MultiData>>
+public class MultiHolderOne extends BaseHolder<MultiPresenter>
         implements MultiMVP.IViewTwo {
 
     public MultiHolderOne(View itemView) {

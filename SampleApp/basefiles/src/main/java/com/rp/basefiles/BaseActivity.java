@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,14 +17,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rp.util.fragment.IFragmentBuilder;
+import com.rp.util.fragment.FragmentBuilder;
 
 /**
  * Created by rahul on 4/1/18.
  */
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements IBaseView, SwipeRefreshLayout.OnRefreshListener, IFragmentBuilder {
+        implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context context = this;
@@ -37,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
+        FragmentBuilder.initManager(getSupportFragmentManager());
     }
 
     @Override
@@ -134,23 +134,14 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     public boolean isConnectedToNetwork() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (cm == null) return false;
-
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
+        NetworkInfo activeNetwork = null;
+        if (cm != null) {
+            activeNetwork = cm.getActiveNetworkInfo();
         }
-        return haveConnectedWifi || haveConnectedMobile;
+        return (activeNetwork != null && activeNetwork.isConnected());
     }
 
     @Override
@@ -171,11 +162,6 @@ public abstract class BaseActivity extends AppCompatActivity
             }
         }
         return null;
-    }
-
-    @Override
-    public FragmentManager fragmentManager() {
-        return getSupportFragmentManager();
     }
 
     public abstract int getLayoutRes();

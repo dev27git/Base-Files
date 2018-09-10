@@ -23,7 +23,7 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
     }
 
     @Override
-    public Class getClassHolder(int viewType) {
+    public Class<?> getClassHolder(int viewType) {
         return holders.get(viewType);
     }
 

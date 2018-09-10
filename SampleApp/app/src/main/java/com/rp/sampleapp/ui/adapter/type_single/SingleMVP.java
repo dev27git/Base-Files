@@ -11,7 +11,7 @@ public interface SingleMVP {
 
     }
 
-    interface IPresenter<E extends SingleData> extends IBaseAdapterPresenter<E> {
+    interface IPresenter extends IBaseAdapterPresenter<SingleData> {
 
     }
 }

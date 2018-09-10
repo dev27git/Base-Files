@@ -1,5 +1,6 @@
 package com.rp.basefiles;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,29 +25,29 @@ public abstract class BaseAdapter<E, P extends IBaseAdapterPresenter<E>>
         this.presenter.onAttachAdapter(this);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseHolder<P> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(getLayoutRes(viewType), parent, false);
-//        String str = getClassHolder(viewType).getName();
+        BaseHolder<P> baseHolder = null;
         try {
-            Class aClass = getClassHolder(viewType);
-            BaseHolder baseHolder = (BaseHolder) aClass.getConstructor(View.class).newInstance(inflate);
+            Class<?> aClass = getClassHolder(viewType);
+            baseHolder = (BaseHolder<P>) aClass.getConstructor(View.class).newInstance(inflate);
             baseHolder.setPresenter(presenter);
-            return baseHolder;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
-        return null;
+        return baseHolder;
     }
 
     @Override
-    public void onBindViewHolder(BaseHolder<P> holder, int position) {
+    public void onBindViewHolder(@NonNull BaseHolder<P> holder, int position) {
         presenter.onAttach(holder.getView());
         presenter.onBind(position);
     }
 
     @Override
-    public void onViewRecycled(@NonNull BaseHolder holder) {
+    public void onViewRecycled(@NonNull BaseHolder<P> holder) {
         super.onViewRecycled(holder);
     }
 
@@ -70,6 +71,6 @@ public abstract class BaseAdapter<E, P extends IBaseAdapterPresenter<E>>
     }
 
     public abstract int getLayoutRes(int viewType);
-    public abstract Class getClassHolder(int viewType);
+    public abstract Class<?> getClassHolder(int viewType);
     public abstract int getViewType(int position);
 }

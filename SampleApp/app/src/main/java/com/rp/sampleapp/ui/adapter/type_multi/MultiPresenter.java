@@ -6,8 +6,8 @@ import com.rp.basefiles.IBaseView;
 import com.rp.sampleapp.pojo.MultiData;
 import com.rp.sampleapp.pojo.SingleData;
 
-public class MultiPresenter<E extends MultiData> extends BaseAdapterPresenter<IBaseHolderView, E>
-        implements MultiMVP.IPresenter<E> {
+public class MultiPresenter extends BaseAdapterPresenter<IBaseHolderView, MultiData>
+        implements MultiMVP.IPresenter {
 
     @Override
     public void onBind(int position) {

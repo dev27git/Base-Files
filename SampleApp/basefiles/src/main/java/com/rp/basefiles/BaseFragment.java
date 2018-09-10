@@ -129,7 +129,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView, SwipeR
         return baseActivity.isConnectedToNetwork();
     }
 
-    public TextView changeToolbarFont(Toolbar toolbar, Context context) {
-        return baseActivity.changeToolbarFont(toolbar, context);
+    public TextView changeToolbarFont(Toolbar toolbar) {
+        return baseActivity.changeToolbarFont(toolbar);
     }
 }

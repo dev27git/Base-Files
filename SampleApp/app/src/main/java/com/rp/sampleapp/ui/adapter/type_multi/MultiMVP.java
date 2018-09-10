@@ -15,7 +15,7 @@ public interface MultiMVP {
 
     }
 
-    interface IPresenter<E extends MultiData> extends IBaseAdapterPresenter<E> {
+    interface IPresenter extends IBaseAdapterPresenter<MultiData> {
 
     }
 }

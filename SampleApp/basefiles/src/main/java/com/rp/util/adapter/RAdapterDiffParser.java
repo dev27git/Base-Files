@@ -1,11 +1,16 @@
 package com.rp.util.adapter;
 
+import android.util.Log;
+
 import com.rp.util.adapter.annotations.Unique;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
+
+    public static final String TAG = RAdapterDiffParser.class.getSimpleName();
 
     private List<E> oldList;
     private List<E> newList;
@@ -13,6 +18,14 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
     public RAdapterDiffParser(List<E> oldList, List<E> newList) {
         this.oldList = oldList;
         this.newList = newList;
+    }
+
+    E getOldData(int pos) {
+        return oldList.get(pos);
+    }
+
+    E getNewData(int pos) {
+        return newList.get(pos);
     }
 
     @Override
@@ -40,7 +53,7 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
         Object oldValue = getValue(oldList.get(oldPos));
         Object newValue = getValue(newList.get(newPos));
 
-        return oldValue.equals(newValue);
+        return Objects.deepEquals(oldValue, newValue);
     }
 
     private Object getValue(Object element) {
@@ -59,7 +72,7 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
             if (declaredField.isAnnotationPresent(Unique.class)) {
                 try {
                     data = declaredField.get(element);
-                    declaredField.setAccessible(isAccessible);
+                    //declaredField.setAccessible(isAccessible);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -72,6 +85,9 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
     }
 
     private boolean isContentSame(int oldPos, int newPos) {
+
+        Log.e(TAG, "isContentSame: old pos " + oldPos);
+        Log.e(TAG, "isContentSame: new pos " + newPos);
 
         Object oldData = oldList.get(oldPos);
         Object newData = newList.get(newPos);
@@ -96,18 +112,26 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
             }
 
             try {
-                if (!oldfield.get(oldData).equals(newFields.get(newData))) {
+                Object dataOne = oldfield.get(oldData);
+                Object dataTwo = newFields.get(newData);
+
+                System.out.println("Old " + oldfield.getName()+" : "+oldfield.get(oldData));
+                System.out.println("New " + newFields.getName()+" : "+newFields.get(newData));
+
+                if (!Objects.deepEquals(dataOne, dataTwo)) {
                     isSame = false;
+                    break;
                 }
 
-                oldfield.setAccessible(isAccessible);
-                newFields.setAccessible(isAccessible);
+//                oldfield.setAccessible(isAccessible);
+//                newFields.setAccessible(isAccessible);
 
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
 
+        Log.w(TAG, "isContentSame: isSame => " + isSame);
         return isSame;
     }
 }

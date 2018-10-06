@@ -3,12 +3,32 @@ package com.rp.util.adapter;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
-public final class RAdapterDiffUtilCallback<E> extends DiffUtil.Callback {
+public final class RAdapterDiffUtilCallback extends DiffUtil.Callback {
 
-    IRAdapterDiffParser diffParser;
+    private IRAdapterDiffParser diffParser;
+    private RAdapterPayloadWatcher payloadWatcher;
+
+    public RAdapterDiffUtilCallback() {}
 
     public RAdapterDiffUtilCallback(IRAdapterDiffParser diffParser) {
         this.diffParser = diffParser;
+    }
+
+    public RAdapterDiffUtilCallback(IRAdapterDiffParser diffParser, RAdapterPayloadWatcher payloadWatcher) {
+        this.diffParser = diffParser;
+        this.payloadWatcher = payloadWatcher;
+    }
+
+    public IRAdapterDiffParser getDiffParser() {
+        return diffParser;
+    }
+
+    public void setDiffParser(IRAdapterDiffParser diffParser) {
+        this.diffParser = diffParser;
+    }
+
+    public void setPayloadWatcher(RAdapterPayloadWatcher payloadWatcher) {
+        this.payloadWatcher = payloadWatcher;
     }
 
     @Override
@@ -34,6 +54,13 @@ public final class RAdapterDiffUtilCallback<E> extends DiffUtil.Callback {
     @Nullable
     @Override
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-        return super.getChangePayload(oldItemPosition, newItemPosition);
+        if (payloadWatcher == null)
+            return null;
+
+        RAdapterDiffParser parser = (RAdapterDiffParser) diffParser;
+        return payloadWatcher.getPayloadData(
+                parser.getOldData(oldItemPosition),
+                parser.getNewData(newItemPosition)
+        );
     }
 }

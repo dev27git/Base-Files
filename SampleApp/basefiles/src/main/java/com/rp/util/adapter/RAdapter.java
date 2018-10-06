@@ -1,5 +1,8 @@
 package com.rp.util.adapter;
 
+import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
+
 import com.rp.basefiles.BaseAdapter;
 import com.rp.basefiles.IBaseAdapterPresenter;
 
@@ -53,6 +56,20 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
 
         public Builder<E,P> addLayouts(Integer... layouts) {
             this.layouts = Arrays.asList(layouts);
+            return this;
+        }
+
+        public Builder<E,P> enableDiffCallback(@NonNull RAdapterPayloadWatcher payloadWatcher) {
+            RAdapterDiffUtilCallback callback = new RAdapterDiffUtilCallback();
+            callback.setPayloadWatcher(payloadWatcher);
+            enableDiffCallback(callback);
+
+            return this;
+        }
+
+        public Builder<E,P> enableDiffCallback(@NonNull DiffUtil.Callback callback) {
+            presenter.onAttachDiffCallback(callback);
+
             return this;
         }
 

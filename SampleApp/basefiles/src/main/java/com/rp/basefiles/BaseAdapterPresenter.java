@@ -1,5 +1,10 @@
 package com.rp.basefiles;
 
+import android.support.v7.util.DiffUtil;
+
+import com.rp.util.adapter.RAdapterDiffParser;
+import com.rp.util.adapter.RAdapterDiffUtilCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +18,8 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
     private List<E> list;
     private BaseAdapter adapter;
     private V baseHolderView;
+
+    private DiffUtil.Callback callback;
 
     public BaseAdapterPresenter() {
         this.list = new ArrayList<>();
@@ -33,13 +40,18 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
         this.baseHolderView = (V) baseHolderView;
     }
 
-    public V view() {
-        return baseHolderView;
-    }
-
     @Override
     public void onAttachAdapter(BaseAdapter adapter) {
         this.adapter = adapter;
+    }
+
+    @Override
+    public void onAttachDiffCallback(DiffUtil.Callback callback) {
+        this.callback = callback;
+    }
+
+    public V view() {
+        return baseHolderView;
     }
 
     @Override
@@ -49,9 +61,26 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
 
     @Override
     public void addNewList(List<E> listNewItems) {
-        int currentSize = getCount();
-        list.addAll(listNewItems);
-        adapter.notifyItemRangeInserted(currentSize, getCount());
+        if (callback == null) {
+            int currentSize = getCount();
+            list.addAll(listNewItems);
+            adapter.notifyItemRangeInserted(currentSize, getCount());
+        } else {
+            addNewDiffList(listNewItems);
+        }
+    }
+
+    // For DiffUtil
+    private void addNewDiffList(List<E> newList) {
+
+        if (callback instanceof RAdapterDiffUtilCallback) {
+            RAdapterDiffParser<E> diffParser = new RAdapterDiffParser<>(list, newList);
+            ((RAdapterDiffUtilCallback) callback).setDiffParser(diffParser);
+        }
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        diffResult.dispatchUpdatesTo(adapter);
+        list.addAll(newList);
     }
 
     @Override

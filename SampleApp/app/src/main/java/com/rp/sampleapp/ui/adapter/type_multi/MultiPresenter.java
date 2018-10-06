@@ -2,9 +2,7 @@ package com.rp.sampleapp.ui.adapter.type_multi;
 
 import com.rp.basefiles.BaseAdapterPresenter;
 import com.rp.basefiles.IBaseHolderView;
-import com.rp.basefiles.IBaseView;
 import com.rp.sampleapp.pojo.MultiData;
-import com.rp.sampleapp.pojo.SingleData;
 
 public class MultiPresenter extends BaseAdapterPresenter<IBaseHolderView, MultiData>
         implements MultiMVP.IPresenter {
@@ -16,6 +14,11 @@ public class MultiPresenter extends BaseAdapterPresenter<IBaseHolderView, MultiD
             onBind((MultiMVP.IViewOne) view(), position);
         else
             onBind(((MultiMVP.IViewTwo) view()), position);
+    }
+
+    @Override
+    public void onBind(int position, Object payloads) {
+
     }
 
     private void onBind(MultiMVP.IViewOne viewOne, int position) {

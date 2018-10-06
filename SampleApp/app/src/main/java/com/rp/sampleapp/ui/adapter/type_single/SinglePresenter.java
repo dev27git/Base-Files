@@ -10,4 +10,9 @@ public class SinglePresenter extends BaseAdapterPresenter<SingleMVP.IView, Singl
     public void onBind(int position) {
 
     }
+
+    @Override
+    public void onBind(int position, Object payloads) {
+
+    }
 }

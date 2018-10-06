@@ -1,18 +1,15 @@
 package com.rp.sampleapp.ui.activity.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.rp.basefiles.BaseActivity;
 import com.rp.sampleapp.R;
-import com.rp.sampleapp.pojo.MultiData;
-import com.rp.sampleapp.pojo.SingleData;
-import com.rp.sampleapp.ui.adapter.type_multi.MultiHolderOne;
-import com.rp.sampleapp.ui.adapter.type_multi.MultiHolderTwo;
-import com.rp.sampleapp.ui.adapter.type_multi.MultiPresenter;
-import com.rp.sampleapp.ui.adapter.type_single.SingleHolder;
-import com.rp.sampleapp.ui.adapter.type_single.SinglePresenter;
+import com.rp.sampleapp.pojo.DiffUtilData;
+import com.rp.sampleapp.ui.adapter.type_diff_util.DiffHolder;
+import com.rp.sampleapp.ui.adapter.type_diff_util.DiffPresenter;
 import com.rp.util.adapter.RAdapter;
 
 import java.util.ArrayList;
@@ -32,6 +29,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         /**
          * For single layouts
@@ -50,14 +48,13 @@ public class MainActivity extends BaseActivity {
                 .addLayouts(R.layout.recycler_layout_one)
                 .build();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(singleAdapter);*/
 
         /**
          * For multi layouts
          */
 
-        List<MultiData> dataOne = new ArrayList<>();
+        /*List<MultiData> dataOne = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             dataOne.add(new MultiData(i));
         }
@@ -70,8 +67,37 @@ public class MainActivity extends BaseActivity {
                 .addLayouts(R.layout.recycler_layout_one, R.layout.recycler_layout_two)
                 .build();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(multiAdapter);
+        recyclerView.setAdapter(multiAdapter);*/
+
+        List<DiffUtilData> list = new ArrayList<>();
+
+        for (int i = 0 ; i < 5 ; i++) {
+            list.add(new DiffUtilData(i, "Value " + i));
+        }
+
+        DiffPresenter presenter = new DiffPresenter();
+        presenter.init(list);
+
+        RAdapter adapter = new RAdapter.Builder<>(presenter)
+                .addHolders(DiffHolder.class)
+                .addLayouts(R.layout.recycler_layout_one)
+                .enableDiffCallback((oldData, newData) -> ((DiffUtilData) newData).getName())
+                .build();
+
+        recyclerView.setAdapter(adapter);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                List<DiffUtilData> list2 = new ArrayList<>();
+                for (int i = 3 ; i < 8 ; i++) {
+                    list2.add(new DiffUtilData(i, "Value New " + i));
+                }
+                presenter.addNewList(list2);
+            }
+        },5000);
+
+
 
     }
 

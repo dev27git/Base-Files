@@ -1,13 +1,14 @@
 package com.rp.basefiles;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * Created by rahul on 14/1/18.
@@ -42,8 +43,20 @@ public abstract class BaseAdapter<E, P extends IBaseAdapterPresenter<E>>
 
     @Override
     public void onBindViewHolder(@NonNull BaseHolder<P> holder, int position) {
+        Log.e(TAG, "onBindViewHolder: called");
         presenter.onAttach(holder.getView());
         presenter.onBind(position);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BaseHolder<P> holder, int position, @NonNull List<Object> payloads) {
+        Log.e(TAG, "onBindViewHolder: payload called");
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position);
+        else {
+            presenter.onAttach(holder.getView());
+            presenter.onBind(position, payloads.get(0));
+        }
     }
 
     @Override

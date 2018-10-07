@@ -1,6 +1,6 @@
 package com.rp.util.adapter;
 
-public interface RAdapterPayloadWatcher<T, E> {
+public interface RAdapterPayloadWatcher<E> {
 
-    T getPayloadData(E oldData, E newData);
+    Object getPayloadData(E oldData, E newData);
 }

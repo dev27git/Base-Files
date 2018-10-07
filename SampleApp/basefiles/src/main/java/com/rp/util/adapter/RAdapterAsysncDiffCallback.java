@@ -1,57 +1,48 @@
 package com.rp.util.adapter;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.util.Log;
 
 import com.rp.util.adapter.annotations.Unique;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Objects;
 
-public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
+public class RAdapterAsysncDiffCallback<T> extends DiffUtil.ItemCallback<T> {
 
-    public static final String TAG = RAdapterDiffParser.class.getSimpleName();
+    public static final String TAG = RAdapterAsysncDiffCallback.class.getSimpleName();
+    private RAdapterPayloadWatcher payloadWatcher;
 
-    private List<E> oldList;
-    private List<E> newList;
-
-    public RAdapterDiffParser(List<E> oldList, List<E> newList) {
-        this.oldList = oldList;
-        this.newList = newList;
-    }
-
-    E getOldData(int pos) { return oldList.get(pos); }
-
-    E getNewData(int pos) { return newList.get(pos); }
-
-    @Override
-    public int getOldListSize() {
-        return oldList != null ? oldList.size() : 0;
+    public RAdapterAsysncDiffCallback(RAdapterPayloadWatcher payloadWatcher) {
+        this.payloadWatcher = payloadWatcher;
     }
 
     @Override
-    public int getNewListSize() {
-        return newList != null ? newList.size() : 0;
-    }
+    public boolean areItemsTheSame(@NonNull T t, @NonNull T t1) {
 
-    @Override
-    public boolean areItemsTheSame(int oldPos, int newPos) {
-        return isUnique(oldPos, newPos);
-    }
-
-    @Override
-    public boolean areContentsTheSame(int oldPos, int newPos) {
-        return isContentSame(oldPos, newPos);
-    }
-
-    private boolean isUnique(int oldPos, int newPos) {
-
-        Object oldValue = getValue(oldList.get(oldPos));
-        Object newValue = getValue(newList.get(newPos));
+        Object oldValue = getValue(t);
+        Object newValue = getValue(t1);
 
         Log.e(TAG, "isUnique: old : " + oldValue + " new : " + newValue + " equal : " + Objects.equals(oldValue, newValue));
 
         return Objects.equals(oldValue, newValue);
+    }
+
+    @Override
+    public boolean areContentsTheSame(@NonNull T t, @NonNull T t1) {
+        return t.equals(t1);//isContentSame(t,t1);
+    }
+
+    @Nullable
+    @Override
+    public Object getChangePayload(@NonNull T oldItem, @NonNull T newItem) {
+
+        if (payloadWatcher == null)
+            return null;
+
+        return payloadWatcher.getPayloadData(oldItem, newItem);
     }
 
     private Object getValue(Object element) {
@@ -82,13 +73,7 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
         return data;
     }
 
-    private boolean isContentSame(int oldPos, int newPos) {
-
-        Log.e(TAG, "isContentSame: old pos " + oldPos);
-        Log.e(TAG, "isContentSame: new pos " + newPos);
-
-        Object oldData = oldList.get(oldPos);
-        Object newData = newList.get(newPos);
+    private boolean isContentSame(Object oldData, Object newData) {
 
         Class<?> oldClass = oldData.getClass();
         Class<?> newClass = newData.getClass();

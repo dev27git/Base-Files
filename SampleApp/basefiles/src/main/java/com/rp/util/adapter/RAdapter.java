@@ -33,6 +33,9 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
     @Override
     public int getViewType(int position) {
 
+        if (presenter().getCount() == 0 || position  > presenter().getCount() - 1)
+            return 0;
+
         E from = presenter().getFrom(position);
         if (from instanceof IRAdapterViewType) {
             return ((IRAdapterViewType) from).getViewType();
@@ -60,9 +63,12 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
         }
 
         public Builder<E,P> enableDiffCallback(@NonNull RAdapterPayloadWatcher payloadWatcher) {
-            RAdapterDiffUtilCallback callback = new RAdapterDiffUtilCallback();
+            /*RAdapterDiffUtilCallback callback = new RAdapterDiffUtilCallback();
             callback.setPayloadWatcher(payloadWatcher);
-            enableDiffCallback(callback);
+            enableDiffCallback(callback);*/
+
+            RAdapterAsysncDiffCallback<E> asysncDiffCallback = new RAdapterAsysncDiffCallback<>(payloadWatcher);
+            presenter.onAttachDiffCallback(asysncDiffCallback);
 
             return this;
         }

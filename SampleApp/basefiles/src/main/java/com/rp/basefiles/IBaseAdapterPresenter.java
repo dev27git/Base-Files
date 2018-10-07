@@ -13,6 +13,7 @@ public interface IBaseAdapterPresenter<E> {
     void onAttach(IBaseHolderView baseHolderView);
     void onAttachAdapter(BaseAdapter adapter);
     void onAttachDiffCallback(DiffUtil.Callback callback);
+    void onAttachDiffCallback(DiffUtil.ItemCallback<E> callback);
 
     int getCount();
     void onBind(int position);

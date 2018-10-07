@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
 import com.rp.basefiles.BaseActivity;
 import com.rp.sampleapp.R;
@@ -11,6 +12,7 @@ import com.rp.sampleapp.pojo.DiffUtilData;
 import com.rp.sampleapp.ui.adapter.type_diff_util.DiffHolder;
 import com.rp.sampleapp.ui.adapter.type_diff_util.DiffPresenter;
 import com.rp.util.adapter.RAdapter;
+import com.rp.util.adapter.RAdapterPayloadWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,15 +78,21 @@ public class MainActivity extends BaseActivity {
         }
 
         DiffPresenter presenter = new DiffPresenter();
-        presenter.init(list);
 
         RAdapter adapter = new RAdapter.Builder<>(presenter)
                 .addHolders(DiffHolder.class)
                 .addLayouts(R.layout.recycler_layout_one)
-                .enableDiffCallback((oldData, newData) -> ((DiffUtilData) newData).getName())
+                .enableDiffCallback((RAdapterPayloadWatcher<DiffUtilData>) (oldData, newData) -> {
+
+                    if (!TextUtils.equals(oldData.getName(), newData.getName()))
+                        return newData.getName();
+
+                    return "other";
+                })
                 .build();
 
         recyclerView.setAdapter(adapter);
+        presenter.addNewList(list);
 
         new Handler().postDelayed(new Runnable() {
             @Override

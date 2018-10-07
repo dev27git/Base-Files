@@ -1,5 +1,7 @@
 package com.rp.sampleapp.pojo;
 
+import android.text.TextUtils;
+
 import com.rp.util.adapter.annotations.Unique;
 
 public class DiffUtilData {
@@ -28,5 +30,12 @@ public class DiffUtilData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        DiffUtilData diffUtilData = (DiffUtilData) obj;
+        return (this.id == diffUtilData.getId())
+                && TextUtils.equals(this.getName(),diffUtilData.getName());
     }
 }

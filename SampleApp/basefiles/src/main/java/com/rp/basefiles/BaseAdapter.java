@@ -55,6 +55,8 @@ public abstract class BaseAdapter<E, P extends IBaseAdapterPresenter<E>>
             onBindViewHolder(holder, position);
         else {
             presenter.onAttach(holder.getView());
+            Log.e(TAG, "onBindViewHolder: payload Size => " + payloads.size()
+                    + " position : " + position + " payload value : " + payloads.get(0));
             presenter.onBind(position, payloads.get(0));
         }
     }

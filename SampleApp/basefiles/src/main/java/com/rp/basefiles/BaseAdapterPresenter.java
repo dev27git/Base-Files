@@ -67,7 +67,7 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
 
     @Override
     public int getCount() {
-        //return list != null ? list.size() : 0;
+//        return list != null ? list.size() : 0;
         return mDiffer.getCurrentList().size();
     }
 
@@ -81,9 +81,10 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
             addNewDiffList(listNewItems);
         }*/
 
-        List<E> dataList = new ArrayList<>(mDiffer.getCurrentList());
-        dataList.addAll(listNewItems);
-        mDiffer.submitList(dataList);
+        //List<E> dataList = new ArrayList<>(mDiffer.getCurrentList());
+        //dataList.addAll(listNewItems);
+
+        mDiffer.submitList(listNewItems);
     }
 
     // For DiffUtil

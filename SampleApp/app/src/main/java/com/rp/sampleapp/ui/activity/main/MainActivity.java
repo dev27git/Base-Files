@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.rp.basefiles.BaseActivity;
 import com.rp.sampleapp.R;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     RecyclerView recyclerView;
 
     @Override
@@ -98,9 +100,19 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 List<DiffUtilData> list2 = new ArrayList<>();
-                for (int i = 3 ; i < 8 ; i++) {
-                    list2.add(new DiffUtilData(i, "Value New " + i));
-                }
+                /*for (int i = 0 ; i < 5 ; i++) {
+                    list2.add(new DiffUtilData(i, "Value " + i));
+                }*/
+
+                list2.add(new DiffUtilData(0, "Value " + 0));
+                list2.add(new DiffUtilData(2, "Value " + 2));
+                //list2.add(new DiffUtilData(4, "Value " + 4));
+                list2.add(new DiffUtilData(1, "Value " + 1));
+                list2.add(new DiffUtilData(3, "Value " + 3));
+                list2.add(new DiffUtilData(5, "Value " + 5));
+
+
+                Log.e(TAG, "run: called");
                 presenter.addNewList(list2);
             }
         },5000);

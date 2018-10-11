@@ -2,12 +2,13 @@ package com.rp.util.adapter;
 
 import android.util.Log;
 
-import com.rp.util.adapter.annotations.Unique;
+import com.rp.util.adapter.annotations.ComparableItem;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
+@Deprecated
 public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
 
     public static final String TAG = RAdapterDiffParser.class.getSimpleName();
@@ -67,7 +68,7 @@ public final class RAdapterDiffParser<E> implements IRAdapterDiffParser {
             if (!isAccessible)
                 declaredField.setAccessible(true);
 
-            if (declaredField.isAnnotationPresent(Unique.class)) {
+            if (declaredField.isAnnotationPresent(ComparableItem.class)) {
                 try {
                     data = declaredField.get(element);
                     //declaredField.setAccessible(isAccessible);

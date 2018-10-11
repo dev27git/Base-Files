@@ -67,8 +67,8 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
             callback.setPayloadWatcher(payloadWatcher);
             enableDiffCallback(callback);*/
 
-            RAdapterAsysncDiffCallback<E> asysncDiffCallback = new RAdapterAsysncDiffCallback<>(payloadWatcher);
-            presenter.onAttachDiffCallback(asysncDiffCallback);
+            RAdapterAsyncDiffCallback<E> asyncDiffCallback = new RAdapterAsyncDiffCallback<>(payloadWatcher);
+            presenter.onAttachDiffCallback(asyncDiffCallback);
 
             return this;
         }

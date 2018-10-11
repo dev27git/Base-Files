@@ -3,6 +3,7 @@ package com.rp.util.adapter;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
+@Deprecated
 public final class RAdapterDiffUtilCallback extends DiffUtil.Callback {
 
     private IRAdapterDiffParser diffParser;

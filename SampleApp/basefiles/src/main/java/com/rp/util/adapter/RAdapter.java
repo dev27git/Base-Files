@@ -44,11 +44,11 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
 
     public static class Builder<E, P extends IBaseAdapterPresenter<E>> {
 
-        private IBaseAdapterPresenter<E> presenter;
+        private P presenter;
         private List<Class<?>> classes;
         private List<Integer> layouts;
 
-        public Builder(IBaseAdapterPresenter<E> presenter) {
+        public Builder(P presenter) {
             this.presenter = presenter;
         }
 
@@ -80,7 +80,7 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
         }
 
         public RAdapter<E,P> build() {
-            return new RAdapter<>((P) presenter, layouts, classes);
+            return new RAdapter<>(presenter, layouts, classes);
         }
     }
 }

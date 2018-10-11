@@ -62,20 +62,8 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
             return this;
         }
 
-        public Builder<E,P> enableDiffCallback(@NonNull RAdapterPayloadWatcher payloadWatcher) {
-            /*RAdapterDiffUtilCallback callback = new RAdapterDiffUtilCallback();
-            callback.setPayloadWatcher(payloadWatcher);
-            enableDiffCallback(callback);*/
-
-            RAdapterAsyncDiffCallback<E> asyncDiffCallback = new RAdapterAsyncDiffCallback<>(payloadWatcher);
-            presenter.onAttachDiffCallback(asyncDiffCallback);
-
-            return this;
-        }
-
-        public Builder<E,P> enableDiffCallback(@NonNull DiffUtil.Callback callback) {
-            presenter.onAttachDiffCallback(callback);
-
+        public Builder<E,P> addPayload(@NonNull RAdapterPayloadWatcher<E> payloadWatcher) {
+           presenter.onAttachPayloadWatcher(payloadWatcher);
             return this;
         }
 

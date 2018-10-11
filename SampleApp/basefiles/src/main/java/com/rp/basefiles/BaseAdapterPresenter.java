@@ -3,8 +3,8 @@ package com.rp.basefiles;
 import android.support.v7.recyclerview.extensions.AsyncListDiffer;
 import android.support.v7.util.DiffUtil;
 
-import com.rp.util.adapter.RAdapterDiffParser;
-import com.rp.util.adapter.RAdapterDiffUtilCallback;
+import com.rp.util.adapter.RAdapterAsyncDiffCallback;
+import com.rp.util.adapter.RAdapterPayloadWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,28 +16,13 @@ import java.util.List;
 public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
         implements IBaseAdapterPresenter<E> {
 
-    private List<E> list;
-    private BaseAdapter adapter;
     private V baseHolderView;
 
-    private DiffUtil.Callback callback;
     private AsyncListDiffer<E> mDiffer;
     private DiffUtil.ItemCallback<E> DIFF_CALLBACK;
 
     public BaseAdapterPresenter() {
-        this.list = new ArrayList<>();
-    }
-
-    public BaseAdapterPresenter(List<E> list) {
-        this.list = list;
-    }
-
-    public void init(List<E> list) {
-        this.list = list;
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-//            mDiffer.submitList(list);
-        }
+        this.DIFF_CALLBACK = new RAdapterAsyncDiffCallback<>();
     }
 
     @Override
@@ -47,13 +32,7 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
 
     @Override
     public void onAttachAdapter(BaseAdapter adapter) {
-        this.adapter = adapter;
-        mDiffer = new AsyncListDiffer(adapter, DIFF_CALLBACK);
-    }
-
-    @Override
-    public void onAttachDiffCallback(DiffUtil.Callback callback) {
-        this.callback = callback;
+        mDiffer = new AsyncListDiffer<>(adapter, DIFF_CALLBACK);
     }
 
     @Override
@@ -61,8 +40,20 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
         this.DIFF_CALLBACK = callback;
     }
 
+    @Override
+    public void onAttachPayloadWatcher(RAdapterPayloadWatcher<E> payloadWatcher) {
+        if (DIFF_CALLBACK instanceof RAdapterAsyncDiffCallback)
+            ((RAdapterAsyncDiffCallback<E>) DIFF_CALLBACK)
+                    .addPayloadWatcher(payloadWatcher);
+    }
+
     public V view() {
         return baseHolderView;
+    }
+
+    @Override
+    public void update(List<E> list) {
+        mDiffer.submitList(list);
     }
 
     @Override
@@ -73,68 +64,39 @@ public abstract class BaseAdapterPresenter<V extends IBaseHolderView, E>
 
     @Override
     public void addNewList(List<E> listNewItems) {
-        /*if (callback == null) {
-            int currentSize = getCount();
-            list.addAll(listNewItems);
-            adapter.notifyItemRangeInserted(currentSize, getCount());
-        } else {
-            addNewDiffList(listNewItems);
-        }*/
-
-        //List<E> dataList = new ArrayList<>(mDiffer.getCurrentList());
-        //dataList.addAll(listNewItems);
-
-        mDiffer.submitList(listNewItems);
-    }
-
-    // For DiffUtil
-    private void addNewDiffList(List<E> newList) {
-
-        if (callback instanceof RAdapterDiffUtilCallback) {
-            RAdapterDiffParser<E> diffParser = new RAdapterDiffParser<>(this.list, newList);
-            ((RAdapterDiffUtilCallback) callback).setDiffParser(diffParser);
-        }
-
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
-
-        /*list.clear();
-        list.addAll(newList);*/
-
-        diffResult.dispatchUpdatesTo(adapter);
-
-//        list.clear();
-        list.addAll(newList);
+        List<E> oldList = new ArrayList<>(mDiffer.getCurrentList());
+        oldList.addAll(listNewItems);
+        mDiffer.submitList(oldList);
     }
 
     @Override
     public void addItem(E data) {
-        list.add(data);
-        adapter.notifyItemInserted(getCount());
+        List<E> oldList = new ArrayList<>(mDiffer.getCurrentList());
+        oldList.add(data);
+        mDiffer.submitList(oldList);
     }
 
     @Override
     public void addItemAt(int position, E data) {
-        //list.add(data);
-        mDiffer.getCurrentList().add(data);
-        adapter.notifyItemInserted(position);
+        List<E> oldList = new ArrayList<>(mDiffer.getCurrentList());
+        oldList.add(position, data);
+        mDiffer.submitList(oldList);
     }
 
     @Override
     public void removeItem(int position) {
-        //list.remove(position);
-        mDiffer.getCurrentList().remove(position);
-        adapter.notifyItemRemoved(position);
+        List<E> oldList = new ArrayList<>(mDiffer.getCurrentList());
+        oldList.remove(position);
+        mDiffer.submitList(oldList);
     }
 
     @Override
     public E getFrom(int position) {
-        //return list.get(position);
         return mDiffer.getCurrentList().get(position);
     }
 
     @Override
     public List<E> getAll() {
-        //return list;
         return mDiffer.getCurrentList();
     }
 }

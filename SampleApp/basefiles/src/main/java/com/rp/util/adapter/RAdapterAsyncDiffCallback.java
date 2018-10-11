@@ -15,7 +15,13 @@ public final class RAdapterAsyncDiffCallback<T> extends DiffUtil.ItemCallback<T>
     public static final String TAG = RAdapterAsyncDiffCallback.class.getSimpleName();
     private RAdapterPayloadWatcher payloadWatcher;
 
+    public RAdapterAsyncDiffCallback() {}
+
     public RAdapterAsyncDiffCallback(RAdapterPayloadWatcher payloadWatcher) {
+        this.payloadWatcher = payloadWatcher;
+    }
+
+    public void addPayloadWatcher(RAdapterPayloadWatcher payloadWatcher) {
         this.payloadWatcher = payloadWatcher;
     }
 

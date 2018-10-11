@@ -13,7 +13,6 @@ import com.rp.sampleapp.pojo.DiffUtilData;
 import com.rp.sampleapp.ui.adapter.type_diff_util.DiffHolder;
 import com.rp.sampleapp.ui.adapter.type_diff_util.DiffPresenter;
 import com.rp.util.adapter.RAdapter;
-import com.rp.util.adapter.RAdapterPayloadWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +83,7 @@ public class MainActivity extends BaseActivity {
         RAdapter adapter = new RAdapter.Builder<>(presenter)
                 .addHolders(DiffHolder.class)
                 .addLayouts(R.layout.recycler_layout_one)
-                .enableDiffCallback((RAdapterPayloadWatcher<DiffUtilData>) (oldData, newData) -> {
+                .addPayload((oldData, newData) -> {
 
                     if (!TextUtils.equals(oldData.getName(), newData.getName()))
                         return newData.getName();
@@ -94,31 +93,25 @@ public class MainActivity extends BaseActivity {
                 .build();
 
         recyclerView.setAdapter(adapter);
-        presenter.addNewList(list);
+        presenter.update(list);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<DiffUtilData> list2 = new ArrayList<>();
-                /*for (int i = 0 ; i < 5 ; i++) {
-                    list2.add(new DiffUtilData(i, "Value " + i));
-                }*/
-
-                list2.add(new DiffUtilData(0, "Value " + 0));
-                list2.add(new DiffUtilData(2, "Value " + 2));
-                //list2.add(new DiffUtilData(4, "Value " + 4));
-                list2.add(new DiffUtilData(1, "Value " + 1));
-                list2.add(new DiffUtilData(3, "Value " + 3));
-                list2.add(new DiffUtilData(5, "Value " + 5));
+        new Handler().postDelayed(() -> {
+            List<DiffUtilData> list2 = new ArrayList<>();
 
 
-                Log.e(TAG, "run: called");
-                presenter.addNewList(list2);
-            }
-        },5000);
+            list2.add(new DiffUtilData(0, "Value " + 0));
+            list2.add(new DiffUtilData(2, "Value " + 2));
+            //list2.add(new DiffUtilData(4, "Value " + 4));
+            list2.add(new DiffUtilData(1, "Value " + 1));
+            list2.add(new DiffUtilData(3, "Value " + 3));
+            list2.add(new DiffUtilData(5, "Value " + 5));
 
 
+            Log.e(TAG, "run: called");
+            presenter.addNewList(list2);
+        },3000);
 
+        new Handler().postDelayed(() -> presenter.addItemAt(2,new DiffUtilData(6, "Single added")), 5000);
     }
 
     @Override

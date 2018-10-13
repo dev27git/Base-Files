@@ -1,7 +1,6 @@
 package com.rp.util.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
 
 import com.rp.basefiles.BaseAdapter;
 import com.rp.basefiles.IBaseAdapterPresenter;
@@ -44,11 +43,11 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
 
     public static class Builder<E, P extends IBaseAdapterPresenter<E>> {
 
-        private IBaseAdapterPresenter<E> presenter;
+        private P presenter;
         private List<Class<?>> classes;
         private List<Integer> layouts;
 
-        public Builder(IBaseAdapterPresenter<E> presenter) {
+        public Builder(P presenter) {
             this.presenter = presenter;
         }
 
@@ -62,25 +61,13 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
             return this;
         }
 
-        public Builder<E,P> enableDiffCallback(@NonNull RAdapterPayloadWatcher payloadWatcher) {
-            /*RAdapterDiffUtilCallback callback = new RAdapterDiffUtilCallback();
-            callback.setPayloadWatcher(payloadWatcher);
-            enableDiffCallback(callback);*/
-
-            RAdapterAsysncDiffCallback<E> asysncDiffCallback = new RAdapterAsysncDiffCallback<>(payloadWatcher);
-            presenter.onAttachDiffCallback(asysncDiffCallback);
-
-            return this;
-        }
-
-        public Builder<E,P> enableDiffCallback(@NonNull DiffUtil.Callback callback) {
-            presenter.onAttachDiffCallback(callback);
-
+        public Builder<E,P> addPayload(@NonNull RAdapterPayloadWatcher<E> payloadWatcher) {
+           presenter.onAttachPayloadWatcher(payloadWatcher);
             return this;
         }
 
         public RAdapter<E,P> build() {
-            return new RAdapter<>((P) presenter, layouts, classes);
+            return new RAdapter<>(presenter, layouts, classes);
         }
     }
 }

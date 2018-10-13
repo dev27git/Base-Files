@@ -2,11 +2,11 @@ package com.rp.sampleapp.pojo;
 
 import android.text.TextUtils;
 
-import com.rp.util.adapter.annotations.Unique;
+import com.rp.util.adapter.annotations.ComparableItem;
 
 public class DiffUtilData {
 
-    @Unique
+    @ComparableItem
     private int id;
 
     private String name;

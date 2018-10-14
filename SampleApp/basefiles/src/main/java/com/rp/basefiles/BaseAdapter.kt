@@ -57,17 +57,11 @@ abstract class BaseAdapter<E, P : IBaseAdapterPresenter<E>>(private val presente
         }
     }
 
-    override fun getItemCount(): Int {
-        return presenter.count
-    }
+    override fun getItemCount(): Int = presenter.count
 
-    override fun getItemViewType(position: Int): Int {
-        return getViewType(position)
-    }
+    override fun getItemViewType(position: Int): Int = getViewType(position)
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     fun presenter(): P = presenter
 

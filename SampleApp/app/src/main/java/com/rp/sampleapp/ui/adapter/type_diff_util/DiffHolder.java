@@ -1,10 +1,11 @@
 package com.rp.sampleapp.ui.adapter.type_diff_util;
 
-import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
 import com.rp.basefiles.BaseHolder;
 import com.rp.sampleapp.R;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 public class DiffHolder extends BaseHolder<DiffPresenter>
         implements DiffMVP.IView {

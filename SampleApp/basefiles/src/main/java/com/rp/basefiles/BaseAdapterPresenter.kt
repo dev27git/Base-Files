@@ -1,7 +1,7 @@
 package com.rp.basefiles
 
-import android.support.v7.recyclerview.extensions.AsyncListDiffer
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import com.rp.util.adapter.RAdapterAsyncDiffCallback
 import com.rp.util.adapter.RAdapterPayloadWatcher
 

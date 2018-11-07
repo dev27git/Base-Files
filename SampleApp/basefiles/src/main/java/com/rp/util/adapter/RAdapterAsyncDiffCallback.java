@@ -1,14 +1,15 @@
 package com.rp.util.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.util.DiffUtil;
 import android.util.Log;
 
 import com.rp.util.adapter.annotations.ComparableItem;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 
 public final class RAdapterAsyncDiffCallback<T> extends DiffUtil.ItemCallback<T> {
 

@@ -2,8 +2,6 @@ package com.rp.sampleapp.ui.activity.main;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -16,6 +14,9 @@ import com.rp.util.adapter.RAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends BaseActivity {
 
@@ -72,6 +73,11 @@ public class MainActivity extends BaseActivity {
 
         recyclerView.setAdapter(multiAdapter);*/
 
+
+        init();
+    }
+
+    public void init() {
         List<DiffUtilData> list = new ArrayList<>();
 
         for (int i = 0 ; i < 5 ; i++) {
@@ -101,7 +107,6 @@ public class MainActivity extends BaseActivity {
 
             list2.add(new DiffUtilData(0, "Value " + 0));
             list2.add(new DiffUtilData(2, "Value " + 2));
-            //list2.add(new DiffUtilData(4, "Value " + 4));
             list2.add(new DiffUtilData(1, "Value " + 1));
             list2.add(new DiffUtilData(3, "Value " + 3));
             list2.add(new DiffUtilData(5, "Value " + 5));
@@ -109,6 +114,8 @@ public class MainActivity extends BaseActivity {
 
             Log.e(TAG, "run: called");
             presenter.addNewList(list2);
+
+
         },3000);
 
         new Handler().postDelayed(() -> presenter.addItemAt(2,new DiffUtilData(6, "Single added")), 5000);

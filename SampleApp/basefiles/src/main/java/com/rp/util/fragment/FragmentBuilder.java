@@ -1,10 +1,15 @@
 package com.rp.util.fragment;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.widget.ImageView;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import dev.rahul.baseutils.v1.util.imageUtility.ImageUtilityKt;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public final class FragmentBuilder {
 

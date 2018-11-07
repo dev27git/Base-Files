@@ -1,7 +1,7 @@
 package com.rp.basefiles
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseHolder<P : IBaseAdapterPresenter<*>>(itemView: View)
     : RecyclerView.ViewHolder(itemView), IBaseHolderView {

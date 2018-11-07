@@ -1,6 +1,6 @@
 package com.rp.basefiles
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import com.rp.util.adapter.RAdapterPayloadWatcher
 
 interface IBaseAdapterPresenter<E> {

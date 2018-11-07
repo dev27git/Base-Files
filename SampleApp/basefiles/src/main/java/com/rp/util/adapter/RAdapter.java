@@ -1,12 +1,12 @@
 package com.rp.util.adapter;
 
-import android.support.annotation.NonNull;
-
 import com.rp.basefiles.BaseAdapter;
 import com.rp.basefiles.IBaseAdapterPresenter;
 
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseAdapter<E,P> {
 

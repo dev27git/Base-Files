@@ -1,6 +1,6 @@
 package com.rp.basefiles
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 
 abstract class BasePresenterVM<V : IBaseView> : ViewModel(), IBasePresenter<V> {
 

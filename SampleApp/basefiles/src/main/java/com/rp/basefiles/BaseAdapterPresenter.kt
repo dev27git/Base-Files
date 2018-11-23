@@ -2,6 +2,7 @@ package com.rp.basefiles
 
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import com.rp.util.adapter.ItemFilter
 import com.rp.util.adapter.RAdapterAsyncDiffCallback
 import com.rp.util.adapter.RAdapterPayloadWatcher
 
@@ -12,6 +13,7 @@ abstract class BaseAdapterPresenter<V : IBaseHolderView, E> : IBaseAdapterPresen
 
     private var mDiffer: AsyncListDiffer<E>? = null
     private var DIFF_CALLBACK: DiffUtil.ItemCallback<E>? = null
+    private val itemFilter: ItemFilter<E> by lazy { ItemFilter(this) }
 
     init {
         this.DIFF_CALLBACK = RAdapterAsyncDiffCallback<E>()
@@ -80,4 +82,8 @@ abstract class BaseAdapterPresenter<V : IBaseHolderView, E> : IBaseAdapterPresen
 
     override val all: List<E>
         get() = mDiffer?.currentList as List<E>
+
+    override fun filter(query: String) {
+        itemFilter.filter(query)
+    }
 }

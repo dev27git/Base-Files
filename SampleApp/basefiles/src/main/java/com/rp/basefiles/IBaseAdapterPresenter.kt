@@ -28,4 +28,6 @@ interface IBaseAdapterPresenter<E> {
 
     fun onBind(position: Int)
     fun onBind(position: Int, payloads: Any)
+
+    fun filter(query : String)
 }

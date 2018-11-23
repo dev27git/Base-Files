@@ -1,5 +1,8 @@
 package com.rp.util.adapter;
 
+import android.widget.Filter;
+import android.widget.Filterable;
+
 import com.rp.basefiles.BaseAdapter;
 import com.rp.basefiles.IBaseAdapterPresenter;
 
@@ -8,7 +11,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseAdapter<E,P> {
+public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseAdapter<E, P>{
 
     private List<Integer> layouts;
     private List<Class<?>> holders;
@@ -32,7 +35,7 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
     @Override
     public int getViewType(int position) {
 
-        if (presenter().getCount() == 0 || position  > presenter().getCount() - 1)
+        if (presenter().getCount() == 0 || position > presenter().getCount() - 1)
             return 0;
 
         E from = presenter().getFrom(position);
@@ -51,22 +54,22 @@ public final class RAdapter<E, P extends IBaseAdapterPresenter<E>> extends BaseA
             this.presenter = presenter;
         }
 
-        public Builder<E,P> addHolders(Class<?>... classes) {
+        public Builder<E, P> addHolders(Class<?>... classes) {
             this.classes = Arrays.asList(classes);
             return this;
         }
 
-        public Builder<E,P> addLayouts(Integer... layouts) {
+        public Builder<E, P> addLayouts(Integer... layouts) {
             this.layouts = Arrays.asList(layouts);
             return this;
         }
 
-        public Builder<E,P> addPayload(@NonNull RAdapterPayloadWatcher<E> payloadWatcher) {
-           presenter.onAttachPayloadWatcher(payloadWatcher);
+        public Builder<E, P> addPayload(@NonNull RAdapterPayloadWatcher<E> payloadWatcher) {
+            presenter.onAttachPayloadWatcher(payloadWatcher);
             return this;
         }
 
-        public RAdapter<E,P> build() {
+        public RAdapter<E, P> build() {
             return new RAdapter<>(presenter, layouts, classes);
         }
     }

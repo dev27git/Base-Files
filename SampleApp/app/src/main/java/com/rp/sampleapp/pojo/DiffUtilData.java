@@ -3,7 +3,9 @@ package com.rp.sampleapp.pojo;
 import android.text.TextUtils;
 
 import com.rp.util.adapter.annotations.ComparableItem;
+import com.rp.util.adapter.annotations.FilterWith;
 
+@FilterWith(values = {"name"})
 public class DiffUtilData {
 
     @ComparableItem

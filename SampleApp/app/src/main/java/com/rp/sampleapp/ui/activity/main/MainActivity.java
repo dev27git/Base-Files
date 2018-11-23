@@ -85,7 +85,6 @@ public class MainActivity extends BaseActivity {
         }
 
         DiffPresenter presenter = new DiffPresenter();
-
         RAdapter adapter = new RAdapter.Builder<>(presenter)
                 .addHolders(DiffHolder.class)
                 .addLayouts(R.layout.recycler_layout_one)
@@ -119,6 +118,13 @@ public class MainActivity extends BaseActivity {
         },3000);
 
         new Handler().postDelayed(() -> presenter.addItemAt(2,new DiffUtilData(6, "Single added")), 5000);
+
+        new Handler().postDelayed(() -> presenter.filter("Va"), 7000);
+
+        new Handler().postDelayed(() -> presenter.filter("Sin"), 9000);
+
+        new Handler().postDelayed(() -> presenter.filter(""), 12000);
+
     }
 
     @Override

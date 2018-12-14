@@ -16,7 +16,7 @@ class ItemFilter<E>(private val baseAdapterPresenter: IBaseAdapterPresenter<E>) 
             filterResults.values = originalList
         } else {
             var newList = originalList.filter {
-                FilterWithParser.isQueryAvailable(it, constraint.toString())
+                FilterWithParser.isQueryAvailable(it, constraint as String?)
             }
 
             if (newList.isNullOrEmpty()) return null

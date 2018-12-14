@@ -29,7 +29,7 @@ class RToast(context: Context?) : Toast(context) {
     private var messageType: Int = DEFAULT
 
     fun showToast() {
-        view?.apply {
+        view?.run {
             findViewById<AppCompatTextView>(R.id.tvMessage).text = message
             findViewById<LinearLayout>(R.id.llBackground).setBackgroundColor(
                     when(messageType) {
@@ -44,29 +44,27 @@ class RToast(context: Context?) : Toast(context) {
 
     companion object Builder {
 
-        private lateinit var rToast: RToast
+        private var rToast: RToast? = null
 
         fun init(context: Context): Builder {
             rToast = RToast(context)
-            rToast.view = LayoutInflater.from(context).inflate(R.layout.toast_layout, null)
+            rToast?.view = LayoutInflater.from(context).inflate(R.layout.toast_layout, null)
             return this
         }
 
         fun text(@NonNull message: String) : Builder {
-            rToast.message = message
+            rToast?.message = message
             return this
         }
 
-        fun text(@Type @StringRes messageRes: Int) : Builder = text(rToast.view.context.getString(messageRes))
+        fun text(@Type @StringRes messageRes: Int) : Builder = text(rToast?.view?.context?.getString(messageRes) ?: "")
 
         fun type(@Type type: Int) : Builder {
-            rToast.messageType = type
+            rToast?.messageType = type
             return this
         }
 
-        fun show() {
-            rToast.showToast()
-        }
+        fun show() = rToast?.showToast()
 
         fun cancel() = rToast?.cancel()
 
